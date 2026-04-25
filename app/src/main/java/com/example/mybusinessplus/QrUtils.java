@@ -27,16 +27,15 @@ public class QrUtils {
             return null;
         }
 
-        // 3. Convert BitMatrix to Bitmap (Using your Navy Color!)
+        // 3. Convert BitMatrix to Bitmap (Using Vibrant Blue)
         int width = bitMatrix.getWidth();
         int height = bitMatrix.getHeight();
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
 
-        int blueColor = Color.parseColor("#0059B2"); // New Vibrant Blue
+        int blueColor = Color.parseColor("#0059B2");
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                // If true, paint Navy. If false, paint White.
                 bitmap.setPixel(x, y, bitMatrix.get(x, y) ? blueColor : Color.WHITE);
             }
         }

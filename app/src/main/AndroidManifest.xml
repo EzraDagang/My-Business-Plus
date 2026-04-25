@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-feature android:name="android.hardware.camera.any" />
-
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -33,7 +32,13 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activity_login"
+            android:exported="false" />
+        <activity
             android:name=".activity_qr"
+            android:exported="false" />
+        <activity
+            android:name=".MerchantActivity"
             android:exported="false" />
         <activity
             android:name=".activity_insights"
@@ -42,14 +47,14 @@
             android:name=".HistoryActivity"
             android:exported="false" />
         <activity
+            android:name=".activity_inventory"
+            android:exported="false" />
+        <activity
             android:name=".WeeklyDashboardActivity"
             android:exported="false" />
         <activity
             android:name=".AddFoodActivity"
             android:exported="false" />
-        <activity
-            android:name=".MerchantActivity"
-            android:exported="false" />
-    </application>
+</application>
 
 </manifest>

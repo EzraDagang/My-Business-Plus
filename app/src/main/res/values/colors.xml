@@ -6,4 +6,9 @@
     <color name="scan_cyan">#00E5FF</color>
     <color name="dark_blue_bg">#001A33</color>
     <color name="black">#000000</color>
+        <color name="tng_bg_blue">#193782</color>
+        <color name="tng_card_dark">#121c38</color>
+        <color name="tng_yellow">#FFCC00</color>
+        <color name="tng_text_white">#FFFFFF</color>
+        <color name="tng_text_dark">#121c38</color>
 </resources>

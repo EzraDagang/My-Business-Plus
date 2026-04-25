@@ -3,160 +3,150 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#113285">
+    android:background="#113285"> <ScrollView
+    android:id="@+id/main_scroll_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="none">
 
-    <ScrollView
-        android:id="@+id/main_scroll_view"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="20dp">
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginBottom="20dp">
 
-            <LinearLayout
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_merchanticon"
+                android:layout_marginEnd="10dp"/>
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:layout_marginBottom="20dp">
+                android:text="Merchant+"
+                android:textColor="#FFFFFF"
+                android:textSize="26sp"
+                android:fontFamily="sans-serif-black" />
+        </LinearLayout>
 
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/ic_merchanticon"
-                    android:layout_marginEnd="10dp"/>
+        <com.google.android.material.card.MaterialCardView
+            style="@style/DarkNavyCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:gravity="center">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Dashboard"
+                        android:textColor="#FFFFFF"
+                        android:textStyle="bold"
+                        android:textSize="18sp" />
+                    <Spinner
+                        android:id="@+id/spinnerTimeframe"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:backgroundTint="#FFFFFF" />
+                </RelativeLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="My Business+"
+                    android:text="NET RESULT"
                     android:textColor="#FFFFFF"
-                    android:textSize="26sp"
-                    android:fontFamily="sans-serif-black" />
+                    android:layout_marginTop="20dp"
+                    android:textSize="14sp"
+                    android:fontFamily="sans-serif-black"/>
+
+                <TextView
+                    android:id="@+id/tvNetRevenue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+RM 308.00"
+                    android:textSize="42sp"
+                    android:textColor="#FFD100"
+                    android:fontFamily="sans-serif-black"/>
+
+                <TextView
+                    android:id="@+id/tvStatusBadge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="PROFIT"
+                    android:paddingHorizontal="30dp"
+                    android:paddingVertical="5dp"
+                    android:background="@drawable/status_badge_profit"
+                    android:textColor="#112349"
+                    android:textStyle="bold"
+                    android:layout_marginTop="10dp"/>
+
+                <com.example.mybusinessplus.SalesLineChartView
+                    android:id="@+id/salesLineChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginHorizontal="10dp"/>
+
             </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.card.MaterialCardView
-                style="@style/DarkNavyCard"
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp"
+            app:cardBackgroundColor="#FFFFFF"
+            android:layout_marginBottom="25dp">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp">
+                android:orientation="horizontal"
+                android:paddingVertical="20dp"
+                android:paddingHorizontal="10dp"
+                android:gravity="center">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="20dp"
-                    android:gravity="center">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Dashboard"
-                            android:textColor="#FFFFFF"
-                            android:textStyle="bold"
-                            android:textSize="18sp" />
-                        <Spinner
-                            android:id="@+id/spinnerTimeframe"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:backgroundTint="#FFFFFF" />
-                    </RelativeLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="TODAY'S NET RESULT"
-                        android:textColor="#FFFFFF"
-                        android:layout_marginTop="20dp"
-                        android:textSize="14sp"
-                        android:fontFamily="sans-serif-black"/>
-
-                    <TextView
-                        android:id="@+id/tvNetRevenue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="+RM 308.00"
-                        android:textSize="42sp"
-                        android:textColor="#FFD100"
-                        android:fontFamily="sans-serif-black"/>
-
-                    <TextView
-                        android:id="@+id/tvStatusBadge"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="PROFIT"
-                        android:paddingHorizontal="30dp"
-                        android:paddingVertical="5dp"
-                        android:background="@drawable/status_badge_profit"
-                        android:textColor="#112349"
-                        android:textStyle="bold"
-                        android:layout_marginTop="10dp"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="120dp"
-                        android:background="#1A3166"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginBottom="15dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Weekly Sales Graph"
-                            android:textColor="#8899BB" />
-                    </LinearLayout>
-
+                <LinearLayout android:id="@+id/nav_inventory" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+                    <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_inventory" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Inventory" android:textSize="10sp" android:textColor="#333333" android:layout_marginTop="5dp"/>
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="20dp"
-                app:cardBackgroundColor="#FFFFFF"
-                android:layout_marginBottom="25dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingVertical="20dp"
-                    android:paddingHorizontal="10dp"
-                    android:gravity="center">
-
-                    <LinearLayout android:id="@+id/nav_inventory" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
-                        <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_inventory" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Inventory" android:textSize="10sp" android:textColor="#333333" android:layout_marginTop="5dp"/>
-                    </LinearLayout>
-
-                    <LinearLayout android:id="@+id/nav_qr" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
-                        <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_qr" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="QR" android:textSize="10sp" android:textColor="#333333" android:layout_marginTop="5dp"/>
-                    </LinearLayout>
-
-                    <LinearLayout android:id="@+id/nav_insights" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
-                        <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_insights" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Insights" android:textSize="10sp" android:textColor="#333333" android:layout_marginTop="5dp"/>
-                    </LinearLayout>
-
-                    <LinearLayout android:id="@+id/nav_history" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
-                        <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_history_scroll" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="History" android:textSize="10sp" android:textColor="#333333" android:layout_marginTop="5dp"/>
-                    </LinearLayout>
+                <LinearLayout android:id="@+id/nav_qr" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+                    <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_qr" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="QR" android:textSize="10sp" android:textColor="#333333" android:layout_marginTop="5dp"/>
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
 
-        </LinearLayout>
-    </ScrollView>
+                <LinearLayout android:id="@+id/nav_insights" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+                    <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_insights" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Insights" android:textSize="10sp" android:textColor="#333333" android:layout_marginTop="5dp"/>
+                </LinearLayout>
+
+                <LinearLayout android:id="@+id/nav_history" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+                    <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_history_scroll" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="History" android:textSize="10sp" android:textColor="#333333" android:layout_marginTop="5dp"/>
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+</ScrollView>
 
 </RelativeLayout>

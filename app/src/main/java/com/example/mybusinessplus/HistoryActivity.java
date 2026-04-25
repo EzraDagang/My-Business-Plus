@@ -1,70 +1,99 @@
 package com.example.mybusinessplus;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import java.util.ArrayList;
-import java.util.List;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 public class HistoryActivity extends AppCompatActivity {
 
-    static class Transaction {
-        String dateTime, title, description, amount, points, monthName;
-        boolean isPositive, isNewMonth;
-
-        public Transaction(String dateTime, String title, String desc, String amount, boolean isPositive, String points, boolean isNewMonth, String monthName) {
-            this.dateTime = dateTime; this.title = title; this.description = desc;
-            this.amount = amount; this.isPositive = isPositive; this.points = points;
-            this.isNewMonth = isNewMonth; this.monthName = monthName;
-        }
-    }
+    private LinearLayout historyListContainer;
+    private LayoutInflater inflater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_history);
 
-        ImageView btnBack = findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(v -> finish());
+        // System Bar Padding
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
-        LinearLayout container = findViewById(R.id.historyListContainer);
-        LayoutInflater inflater = LayoutInflater.from(this);
+        findViewById(R.id.btnBack).setOnClickListener(v -> finish());
 
-        List<Transaction> history = new ArrayList<>();
-        history.add(new Transaction("25 Apr, 03:21", "GO+ Daily Earnings", "To GO+ Balance", "+RM0.27", true, null, true, "APRIL 26"));
-        history.add(new Transaction("24 Apr, 20:08", "NOVI KAFE", "DuitNow QR TNGD", "-RM10.80", false, "+10 points", false, null));
-        history.add(new Transaction("24 Apr, 20:08", "Quick Reload Payment", "Via GO+ Balance", "+RM10.80", true, null, false, null));
-        history.add(new Transaction("24 Apr, 15:54", "ISRAH CAFE", "DuitNow QR TNGD", "-RM9.00", false, "+9 points", false, null));
+        historyListContainer = findViewById(R.id.historyListContainer);
+        inflater = LayoutInflater.from(this);
 
-        for (Transaction txn : history) {
-            View rowView = inflater.inflate(R.layout.item_history, container, false);
+        setupFilterSpinner();
+    }
 
-            ((TextView) rowView.findViewById(R.id.tvDateTime)).setText(txn.dateTime);
-            ((TextView) rowView.findViewById(R.id.tvTitle)).setText(txn.title);
-            ((TextView) rowView.findViewById(R.id.tvDescription)).setText(txn.description);
+    private void setupFilterSpinner() {
+        Spinner spinner = findViewById(R.id.spinnerTimeFilter);
+        String[] filters = {"Today", "This Week", "This Month"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, filters);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
 
-            TextView tvAmount = rowView.findViewById(R.id.tvAmount);
-            tvAmount.setText(txn.amount);
-            tvAmount.setTextColor(txn.isPositive ? Color.parseColor("#0053B5") : Color.parseColor("#333333"));
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Clear the list before adding new filtered data
+                historyListContainer.removeAllViews();
 
-            if (txn.points != null) {
-                TextView tvP = rowView.findViewById(R.id.tvPoints);
-                tvP.setText(txn.points);
-                tvP.setVisibility(View.VISIBLE);
+                if (position == 0) {
+                    // "Today" Data
+                    addTransactionRow("26 Apr, 02:15 PM", "Hazim", "3x Nasi Lemak, 2x Karipap", "+RM17.00");
+                    addTransactionRow("26 Apr, 12:30 PM", "Aimaan", "1x Chicken Porridge", "+RM4.00");
+                } else if (position == 1) {
+                    // "This Week" Data (Includes Today's plus older ones)
+                    addTransactionRow("26 Apr, 02:15 PM", "Hazim", "3x Nasi Lemak, 2x Karipap", "+RM17.00");
+                    addTransactionRow("26 Apr, 12:30 PM", "Aimaan", "1x Chicken Porridge", "+RM4.00");
+                    addTransactionRow("24 Apr, 09:00 AM", "Hani", "2x Kuih Sago", "+RM2.00");
+                    addTransactionRow("23 Apr, 08:45 AM", "Amni", "5x Karipap", "+RM12.50");
+                } else {
+                    // "This Month" Data
+                    addTransactionRow("26 Apr, 02:15 PM", "Hazim", "3x Nasi Lemak, 2x Karipap", "+RM17.00");
+                    addTransactionRow("15 Apr, 10:20 AM", "Nurina", "10x Nasi Lemak (Bulk Order)", "+RM40.00");
+                    addTransactionRow("02 Apr, 04:00 PM", "Hazim", "2x Chicken Porridge", "+RM8.00");
+                }
             }
 
-            if (txn.isNewMonth) {
-                TextView tvM = rowView.findViewById(R.id.tvMonthHeader);
-                tvM.setText(txn.monthName);
-                tvM.setVisibility(View.VISIBLE);
-            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+    }
 
-            container.addView(rowView);
-        }
+    private void addTransactionRow(String dateTime, String customerName, String items, String amount) {
+        // Inflate the custom row we built in Step 1
+        View rowView = inflater.inflate(R.layout.item_history_row, historyListContainer, false);
+
+        // Link the specific text views inside that row
+        TextView tvDateTime = rowView.findViewById(R.id.tvHistoryDateTime);
+        TextView tvCustomer = rowView.findViewById(R.id.tvHistoryCustomer);
+        TextView tvItems = rowView.findViewById(R.id.tvHistoryItems);
+        TextView tvAmount = rowView.findViewById(R.id.tvHistoryAmount);
+
+        // Set the data
+        tvDateTime.setText(dateTime);
+        tvCustomer.setText(customerName);
+        tvItems.setText(items);
+        tvAmount.setText(amount);
+
+        // Add the finished row to the screen
+        historyListContainer.addView(rowView);
     }
 }
