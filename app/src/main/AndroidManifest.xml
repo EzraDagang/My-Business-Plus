@@ -13,6 +13,18 @@
         android:theme="@style/Theme.MyBusinessPlus"
         tools:targetApi="31">
         <activity
+            android:name=".activity_insights"
+            android:exported="false" />
+        <activity
+            android:name=".HistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WeeklyDashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddFoodActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
