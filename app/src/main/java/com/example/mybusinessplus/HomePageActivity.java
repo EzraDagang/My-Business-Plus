@@ -7,19 +7,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.widget.Button;
 import android.view.View;
-import android.widget.Toast;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class HomePage extends AppCompatActivity {
+public class HomePageActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +31,12 @@ public class HomePage extends AppCompatActivity {
         }
 
         findViewById(R.id.layoutMyBusiness).setOnClickListener(v -> {
-            Intent intent = new Intent(HomePage.this, MerchantActivity.class);
+            Intent intent = new Intent(HomePageActivity.this, MerchantActivity.class);
             startActivity(intent);
         });
 
         findViewById(R.id.layoutMyBusiness).setOnClickListener(v -> {
-            Intent intent = new Intent(HomePage.this, MerchantActivity.class);
+            Intent intent = new Intent(HomePageActivity.this, MerchantActivity.class);
             startActivity(intent);
         });
 
@@ -52,7 +44,7 @@ public class HomePage extends AppCompatActivity {
 
         btnScan.setOnClickListener(v -> {
             // Navigate to your scanner activity
-            Intent intent = new Intent(HomePage.this, QrScannerActivity.class);
+            Intent intent = new Intent(HomePageActivity.this, QrScannerActivity.class);
             startActivity(intent);
         });
 
