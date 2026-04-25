@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    android:orientation="vertical">
+    android:background="#F5F6F8">
 
     <RelativeLayout
+        android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="#113285"
+        android:background="#0059B2"
         android:paddingHorizontal="20dp">
 
         <ImageView
@@ -26,48 +27,51 @@
             android:layout_centerInParent="true"
             android:text="History"
             android:textColor="#FFFFFF"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:src="@android:drawable/ic_menu_sort_by_size"
-            app:tint="#FFFFFF" />
     </RelativeLayout>
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/filterBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="15dp">
+        android:layout_height="50dp"
+        android:layout_below="@id/topBar"
+        android:background="#FFFFFF"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="20dp"
+        android:elevation="2dp">
+
+        <Spinner
+            android:id="@+id/spinnerTimeFilter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#333333"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="27 Mar 26 - 25 Apr 26  ▼"
-            android:textColor="#333333" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:background="@drawable/btn_outline_blue"
+            android:text="Send to email"
+            android:textColor="#0059B2"
+            android:textSize="12sp"
+            android:textStyle="bold"
             android:paddingHorizontal="12dp"
             android:paddingVertical="6dp"
-            android:text="Send to email"
-            android:textColor="#0053B5"
-            android:textSize="12sp" />
-    </RelativeLayout>
+            android:background="@drawable/insight_border"/> </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/filterBar"
+        android:layout_marginTop="10dp"
+        android:scrollbars="none">
+
         <LinearLayout
             android:id="@+id/historyListContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:orientation="vertical"
+            android:background="#FFFFFF"/>
     </ScrollView>
-</LinearLayout>
+</RelativeLayout>

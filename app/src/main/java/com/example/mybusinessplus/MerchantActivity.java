@@ -18,6 +18,7 @@ import java.util.List;
 public class MerchantActivity extends AppCompatActivity {
 
     private TextView tvNetRevenue, tvStatusBadge;
+    private SalesLineChartView chartView; // Connects to your custom chart
     private double dailyNetResult = 0;
 
     // Helper class for inventory math
@@ -35,12 +36,13 @@ public class MerchantActivity extends AppCompatActivity {
 
         // 1. Link UI Elements
         tvNetRevenue = findViewById(R.id.tvNetRevenue);
-        tvStatusBadge = findViewById(R.id.tvStatusBadge); // The new singular badge
+        tvStatusBadge = findViewById(R.id.tvStatusBadge);
+        chartView = findViewById(R.id.salesLineChart);
         Spinner spinnerTimeframe = findViewById(R.id.spinnerTimeframe);
 
         // 2. Navigation "Bridge" Logic
         findViewById(R.id.nav_inventory).setOnClickListener(v ->
-                startActivity(new Intent(MerchantActivity.this, AddFoodActivity.class))
+                startActivity(new Intent(MerchantActivity.this, activity_inventory.class))
         );
 
         findViewById(R.id.nav_history).setOnClickListener(v ->
@@ -75,13 +77,28 @@ public class MerchantActivity extends AppCompatActivity {
         }
         dailyNetResult = rev - loss;
 
-        // 5. Spinner Listener
+        // 5. Spinner Listener & Dynamic Chart Updater
         spinnerTimeframe.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 1) updateDashboard(1450.75); // Week Mock Data
-                else if (position == 2) updateDashboard(5820.00); // Month Mock Data
-                else updateDashboard(dailyNetResult); // Daily Calculation
+                if (position == 0) {
+                    // "Daily" - Hourly progression (e.g., morning to evening)
+                    updateDashboard(dailyNetResult);
+                    float[] hourlyData = {12.5f, 25.0f, 45.5f, 30.0f, 80.0f, 110.0f, 65.0f, 40.0f, 90.0f, 15.0f};
+                    chartView.setData(hourlyData);
+
+                } else if (position == 1) {
+                    // "This Week" - Mon to Sun progression
+                    updateDashboard(1450.75);
+                    float[] weeklyData = {150f, 200f, 180f, 220f, 300f, 450f, 380f};
+                    chartView.setData(weeklyData);
+
+                } else if (position == 2) {
+                    // "This Month" - Week 1 to Week 4 progression
+                    updateDashboard(5820.00);
+                    float[] monthlyData = {1200f, 1450f, 1100f, 1800f};
+                    chartView.setData(monthlyData);
+                }
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}

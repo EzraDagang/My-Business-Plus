@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="15dp"
+        android:gravity="center_vertical">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvHistoryDateTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="25 Apr, 03:21 PM"
+                android:textColor="#888888"
+                android:textSize="12sp"
+                android:layout_marginBottom="4dp"/>
+
+            <TextView
+                android:id="@+id/tvHistoryCustomer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CUSTOMER NAME"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="4dp"/>
+
+            <TextView
+                android:id="@+id/tvHistoryItems"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2x Nasi Lemak, 1x Karipap"
+                android:textColor="#666666"
+                android:textSize="13sp"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvHistoryAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+RM10.50"
+            android:textColor="#0059B2"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#EEEEEE"
+        android:layout_marginHorizontal="20dp"/>
+</LinearLayout>

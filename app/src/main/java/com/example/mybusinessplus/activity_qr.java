@@ -39,7 +39,7 @@ public class activity_qr extends AppCompatActivity {
         String myBase64Data = "SGVsbG8gVU0h";
 
         try {
-            Bitmap qrBitmap = com.example.mybusinessplus.QrUtils.generateQrFromBase64(myBase64Data, 512);
+            Bitmap qrBitmap = QrUtils.generateQrFromBase64(myBase64Data, 512);
             if (qrBitmap != null) {
                 qrImageView.setImageBitmap(qrBitmap);
             }
