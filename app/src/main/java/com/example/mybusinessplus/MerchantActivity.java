@@ -2,7 +2,6 @@ package com.example.mybusinessplus;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,7 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MerchantActivity extends AppCompatActivity {
 
     // 1. Create a simple class to hold our item data
     class InventoryItem {
@@ -37,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_merchant);
 
         // Handle edge-to-edge screens
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), (v, insets) -> {
@@ -59,8 +58,8 @@ public class MainActivity extends AppCompatActivity {
         Button btnVoiceInput = findViewById(R.id.btnVoiceInput);
 
         // Make buttons interactive for the demo
-        btnAutoScan.setOnClickListener(v -> Toast.makeText(MainActivity.this, "Opening AI Camera...", Toast.LENGTH_SHORT).show());
-        btnVoiceInput.setOnClickListener(v -> Toast.makeText(MainActivity.this, "Listening for voice input...", Toast.LENGTH_SHORT).show());
+        btnAutoScan.setOnClickListener(v -> Toast.makeText(MerchantActivity.this, "Opening AI Camera...", Toast.LENGTH_SHORT).show());
+        btnVoiceInput.setOnClickListener(v -> Toast.makeText(MerchantActivity.this, "Listening for voice input...", Toast.LENGTH_SHORT).show());
 
         // 4. Calculate Totals
         double totalRevenue = 0;
