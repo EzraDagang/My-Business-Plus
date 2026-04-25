@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MerchantActivity extends AppCompatActivity {
 
     private TextView tvNetRevenue, tvStatusBadge;
     private double dailyNetResult = 0;
@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_merchant);
 
         // 1. Link UI Elements
         tvNetRevenue = findViewById(R.id.tvNetRevenue);
@@ -40,15 +40,15 @@ public class MainActivity extends AppCompatActivity {
 
         // 2. Navigation "Bridge" Logic
         findViewById(R.id.nav_inventory).setOnClickListener(v ->
-                startActivity(new Intent(MainActivity.this, AddFoodActivity.class))
+                startActivity(new Intent(MerchantActivity.this, AddFoodActivity.class))
         );
 
         findViewById(R.id.nav_history).setOnClickListener(v ->
-                startActivity(new Intent(MainActivity.this, HistoryActivity.class))
+                startActivity(new Intent(MerchantActivity.this, HistoryActivity.class))
         );
 
         findViewById(R.id.nav_insights).setOnClickListener(v ->
-                startActivity(new Intent(MainActivity.this, activity_insights.class))
+                startActivity(new Intent(MerchantActivity.this, activity_insights.class))
         );
 
         findViewById(R.id.nav_qr).setOnClickListener(v ->
