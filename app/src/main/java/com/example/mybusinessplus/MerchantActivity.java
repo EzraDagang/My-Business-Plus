@@ -1,35 +1,34 @@
 package com.example.mybusinessplus;
 
+import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MerchantActivity extends AppCompatActivity {
 
-    // 1. Create a simple class to hold our item data
-    class InventoryItem {
-        String name;
-        double price;
-        int startQty;
-        int unsoldQty;
+    private TextView tvNetRevenue;
+    private Button btnProfitToggle, btnLossToggle;
+    private double dailyNetResult = 0;
 
+    // Helper class for inventory math
+    class InventoryItem {
+        String name; double price; int startQty; int unsoldQty;
         public InventoryItem(String name, double price, int startQty, int unsoldQty) {
-            this.name = name;
-            this.price = price;
-            this.startQty = startQty;
-            this.unsoldQty = unsoldQty;
+            this.name = name; this.price = price; this.startQty = startQty; this.unsoldQty = unsoldQty;
         }
     }
 
@@ -38,87 +37,120 @@ public class MerchantActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_merchant);
 
-        // Handle edge-to-edge screens
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        // 1. Link UI Elements
+        tvNetRevenue = findViewById(R.id.tvNetRevenue);
+        btnProfitToggle = findViewById(R.id.btnProfitToggle);
+        btnLossToggle = findViewById(R.id.btnLossToggle);
+        LinearLayout inventoryContainer = findViewById(R.id.inventoryContainer);
+        Spinner spinnerTimeframe = findViewById(R.id.spinnerTimeframe);
 
-        // 2. Setup Hackathon Mock Data
+        // 2. Navigation "Bridge" Logic
+        // Link to Inventory Setting (AddFoodActivity)
+        findViewById(R.id.nav_inventory).setOnClickListener(v ->
+                startActivity(new Intent(MerchantActivity.this, AddFoodActivity.class))
+        );
+
+        // Link to History Page
+        findViewById(R.id.nav_history).setOnClickListener(v ->
+                startActivity(new Intent(MerchantActivity.this, HistoryActivity.class))
+        );
+
+        // Link to Insights Page
+        findViewById(R.id.nav_insights).setOnClickListener(v ->
+                startActivity(new Intent(MerchantActivity.this, activity_insights.class))
+        );
+
+        // 3. Dropdown (Spinner) Setup
+        String[] options = {"Daily", "This Week", "This Month"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, options);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerTimeframe.setAdapter(adapter);
+
+        // 4. Mock Data & Math
         List<InventoryItem> items = new ArrayList<>();
         items.add(new InventoryItem("Karipap", 1.50, 100, 20));
         items.add(new InventoryItem("Nasi Lemak", 3.00, 50, 2));
         items.add(new InventoryItem("Kuih Lapis", 1.00, 80, 0));
 
-        // 3. Link UI elements
-        TextView tvSimpleReport = findViewById(R.id.tvSimpleReport);
-        LinearLayout inventoryContainer = findViewById(R.id.inventoryContainer);
-        Button btnAutoScan = findViewById(R.id.btnAutoScan);
-        Button btnVoiceInput = findViewById(R.id.btnVoiceInput);
-
-        // Make buttons interactive for the demo
-        btnAutoScan.setOnClickListener(v -> Toast.makeText(MerchantActivity.this, "Opening AI Camera...", Toast.LENGTH_SHORT).show());
-        btnVoiceInput.setOnClickListener(v -> Toast.makeText(MerchantActivity.this, "Listening for voice input...", Toast.LENGTH_SHORT).show());
-
-        // 4. Calculate Totals
-        double totalRevenue = 0;
-        double totalWasteLoss = 0;
-        String bestItem = items.get(0).name; // Default to first item
-
+        double rev = 0; double loss = 0;
         for (InventoryItem item : items) {
-            int soldQty = item.startQty - item.unsoldQty;
-            totalRevenue += (soldQty * item.price);
-            totalWasteLoss += (item.unsoldQty * item.price);
-
-            // Build the UI for each item dynamically
-            addViewForItem(inventoryContainer, item, soldQty);
+            int sold = item.startQty - item.unsoldQty;
+            rev += (sold * item.price);
+            loss += (item.unsoldQty * item.price);
+            addViewForItem(inventoryContainer, item, sold);
         }
+        dailyNetResult = rev - loss;
 
-        // 5. Update the Simple Report text
-        String reportText = String.format(
-                "Great job! Today you earned RM %.2f.\n" +
-                        "Your best item was Kuih Lapis (Sold Out).\n" +
-                        "You lost RM %.2f from unsold food.",
-                totalRevenue, totalWasteLoss
-        );
-        tvSimpleReport.setText(reportText);
+        // 5. Spinner Listener to update dashboard numbers
+        spinnerTimeframe.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 1) updateDashboard(1450.75); // Week Mock Data
+                else if (position == 2) updateDashboard(5820.00); // Month Mock Data
+                else updateDashboard(dailyNetResult); // Daily Calculation
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
     }
 
-    // Helper method to create item UI dynamically without needing complex Adapters
+    /**
+     * Updates the revenue text and toggles button colors based on profit/loss
+     */
+    private void updateDashboard(double amount) {
+        tvNetRevenue.setText(String.format("%sRM %.2f", amount >= 0 ? "+" : "-", Math.abs(amount)));
+
+        // Color: Orange for profit, Red for loss
+        tvNetRevenue.setTextColor(amount >= 0 ? Color.parseColor("#FF5722") : Color.parseColor("#FF5252"));
+
+        if (amount >= 0) {
+            // Profit Active: Gold background, Navy text
+            btnProfitToggle.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFD100")));
+            btnProfitToggle.setTextColor(Color.parseColor("#113285"));
+
+            // Loss Inactive: Light Gray background, Dark Gray text
+            btnLossToggle.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F0F0F0")));
+            btnLossToggle.setTextColor(Color.parseColor("#888888"));
+        } else {
+            // Profit Inactive
+            btnProfitToggle.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F0F0F0")));
+            btnProfitToggle.setTextColor(Color.parseColor("#888888"));
+
+            // Loss Active: Red background, White text
+            btnLossToggle.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FF5252")));
+            btnLossToggle.setTextColor(Color.WHITE);
+        }
+    }
+
+    /**
+     * Dynamically adds inventory cards to the bottom list
+     */
     private void addViewForItem(LinearLayout container, InventoryItem item, int soldQty) {
-        CardView card = new CardView(this);
-        LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        cardParams.setMargins(0, 0, 0, 30); // Bottom margin
-        card.setLayoutParams(cardParams);
+        com.google.android.material.card.MaterialCardView card = new com.google.android.material.card.MaterialCardView(this);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(-1, -2);
+        params.setMargins(0, 0, 0, 30);
+        card.setLayoutParams(params);
         card.setRadius(16f);
-        card.setCardElevation(4f);
+        card.setCardBackgroundColor(Color.parseColor("#113285"));
+        card.setStrokeColor(Color.WHITE);
+        card.setStrokeWidth(2);
 
         LinearLayout row = new LinearLayout(this);
         row.setOrientation(LinearLayout.VERTICAL);
         row.setPadding(40, 40, 40, 40);
 
-        // Name and Price
-        TextView tvName = new TextView(this);
-        tvName.setText(item.name + " (RM " + String.format("%.2f", item.price) + ")");
-        tvName.setTextSize(18f);
-        tvName.setTextColor(Color.parseColor("#333333"));
+        TextView name = new TextView(this);
+        name.setText(item.name + " (Sold: " + soldQty + ")");
+        name.setTextColor(Color.WHITE);
+        name.setTypeface(null, Typeface.BOLD);
 
-        // Stats
-        TextView tvStats = new TextView(this);
-        double revenue = soldQty * item.price;
-        tvStats.setText("Made: " + item.startQty + " | Unsold: " + item.unsoldQty + " | Earned: RM " + String.format("%.2f", revenue));
-        tvStats.setTextSize(14f);
-        tvStats.setTextColor(Color.parseColor("#555555"));
-        tvStats.setPadding(0, 10, 0, 0);
+        TextView stats = new TextView(this);
+        stats.setText("Unsold: " + item.unsoldQty + " | Revenue: RM " + String.format("%.2f", soldQty * item.price));
+        stats.setTextColor(Color.parseColor("#FFD100"));
 
-        row.addView(tvName);
-        row.addView(tvStats);
+        row.addView(name);
+        row.addView(stats);
         card.addView(row);
-
         container.addView(card);
     }
 }

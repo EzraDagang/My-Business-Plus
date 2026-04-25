@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">My Business Plus</string>
+    <string-array name="timeframe_options">
+        <item>Today</item>
+        <item>This Week</item>
+        <item>This Month</item>
+        <item>This Year</item>
+    </string-array>
 </resources>

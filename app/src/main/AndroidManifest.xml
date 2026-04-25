@@ -18,6 +18,7 @@
         <activity
             android:name=".QrScannerActivity"
             android:exported="false" />
+
         <activity
             android:name=".HomePage"
             android:exported="true">
@@ -27,9 +28,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".activity_insights"
+            android:exported="false" />
+        <activity
+            android:name=".HistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WeeklyDashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddFoodActivity"
+            android:exported="false" />
         <activity
             android:name=".MerchantActivity"
-            android:exported="false" />
+            android:exported="false"/>
     </application>
 
 </manifest>
