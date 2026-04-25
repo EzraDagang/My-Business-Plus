@@ -11,6 +11,8 @@ zxing = "3.5.3" # Added ZXing version here
 camerax = "1.3.0"
 barcode-scanning = "17.3.0"
 browser = "1.8.0"
+gson = "2.10.1"
+volley = "1.2.1"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -21,6 +23,8 @@ material = { group = "com.google.android.material", name = "material", version.r
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 zxing-core = { group = "com.google.zxing", name = "core", version.ref = "zxing" } # Added ZXing library here
+google-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+volley = { group = "com.android.volley", name = "volley", version.ref = "volley" }
 
 camera-core = { group = "androidx.camera", name = "camera-core", version.ref = "camerax" }
 camera-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "camerax" }
