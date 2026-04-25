@@ -1,75 +1,58 @@
 package com.example.mybusinessplus;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.content.Context;
-import android.util.Log;
+import android.content.Intent;
 import android.widget.Toast;
-import com.android.volley.DefaultRetryPolicy;
+
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Manager {
-    static long merchantId;
-    static String token; // This is where the token will be stored
-    static String url = "https://tnghackathon-1.onrender.com/auth/login";
-    static boolean isProcessing = false;
+public class manager {
+    private static String loginUrl = "https://tnghackathon-1.onrender.com/auth/login";
+    public static String Authorization = "Authorization";
 
-    public static void login(String email, String password, Context context) {
-        isProcessing = true;
+    public static int userId = 1;
+    public static String token;
 
-        // 1. Create the JSON object
-        JSONObject jsonBody = new JSONObject();
+    public static void performLogin(String email, String password, Context context) {
+        // 3. Create the JSON Body
+        JSONObject loginBody = new JSONObject();
         try {
-            jsonBody.put("email", "amna@um.edu.my");
-            jsonBody.put("password", "password123");
+            loginBody.put("email", email);
+            loginBody.put("password", password);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-// 2. Initialize the request
-        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, url, jsonBody,
+        // 4. Create the Request
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, loginUrl, loginBody,
                 response -> {
-                    // Call the parser
-                    parseTokenResponse(String.valueOf(response));
+                    try {
+                        // 1. Extract the token from the JSON response
+                        token ="Bearer " + response.getString("token");
 
-                    // Optional: Feedback for testing
-                    Log.d("TOKEN_SAVED", "Token is now: " + token);
-                    isProcessing = false;
-                },
-                error -> {
-                    isProcessing = false;
-                    Toast.makeText(context, "Login Failed", Toast.LENGTH_SHORT).show();
-                }
-        );
-    }
 
-    /**
-     * Specifically extracts the token from the JSON and loads it into the static variable
-     */
-    private static void parseTokenResponse(String jsonResponse) {
-        try {
-            Gson gson = new Gson();
-            // Map the JSON string to our LoginResponse class
-            LoginResponse data = gson.fromJson(jsonResponse, LoginResponse.class);
+                    } catch (JSONException e) {
 
-            if (data != null && data.token != null) {
-                // LOAD THE TOKEN into the static variable
-                Manager.token = data.token;
-            }
-        } catch (Exception e) {
-            Log.e("JSON_ERROR", "Failed to parse token", e);
+                    }
+                },error -> {
         }
+        );
+
+        // 5. Add to RequestQueue
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(request);
     }
 
-
-}
-
-class LoginResponse {
-    String token;
-    String tokenType;
+    public static void mockLogin(Context context){
+        userId = 2;
+        performLogin("xa@example.com",context);
+    }
 }
