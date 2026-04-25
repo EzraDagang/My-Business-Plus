@@ -75,6 +75,11 @@ public class MerchantActivity extends AppCompatActivity {
             }
             @Override public void onNothingSelected(AdapterView<?> parent) {}
         });
+
+        TextView myTextView = findViewById(R.id.tvNetRevenue);
+
+        // 2. Change the text
+//        myTextView.setText();
     }
 
     private void calculateMockData() {

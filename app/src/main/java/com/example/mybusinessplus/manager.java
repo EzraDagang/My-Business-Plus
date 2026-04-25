@@ -16,6 +16,9 @@ import org.json.JSONObject;
 
 public class manager {
     private static String loginUrl = "https://tnghackathon-1.onrender.com/auth/login";
+    public static String Authorization = "Authorization";
+
+    public static int userId = 1;
     public static String token;
 
     public static void performLogin(String email, String password, Context context) {
@@ -33,7 +36,7 @@ public class manager {
                 response -> {
                     try {
                         // 1. Extract the token from the JSON response
-                        token = response.getString("token");
+                        token ="Bearer " + response.getString("token");
 
 
                     } catch (JSONException e) {
@@ -46,5 +49,10 @@ public class manager {
         // 5. Add to RequestQueue
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(request);
+    }
+
+    public static void mockLogin(Context context){
+        userId = 2;
+        performLogin("amna@um.edu.my","password123",context);
     }
 }
