@@ -41,10 +41,9 @@
             </LinearLayout>
 
             <com.google.android.material.card.MaterialCardView
+                style="@style/DarkNavyCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="20dp"
-                app:cardBackgroundColor="#FFFFFF"
                 android:layout_marginBottom="20dp">
 
                 <LinearLayout
@@ -61,21 +60,22 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Dashboard"
-                            android:textColor="#113285"
+                            android:textColor="#FFFFFF"
                             android:textStyle="bold"
                             android:textSize="18sp" />
                         <Spinner
                             android:id="@+id/spinnerTimeframe"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true" />
+                            android:layout_alignParentEnd="true"
+                            android:backgroundTint="#FFFFFF" />
                     </RelativeLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="TODAY'S NET RESULT"
-                        android:textColor="#113285"
+                        android:textColor="#FFFFFF"
                         android:layout_marginTop="20dp"
                         android:textSize="14sp"
                         android:fontFamily="sans-serif-black"/>
@@ -84,82 +84,38 @@
                         android:id="@+id/tvNetRevenue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="+RM 367.67"
+                        android:text="+RM 308.00"
                         android:textSize="42sp"
-                        android:textColor="#FF5722"
+                        android:textColor="#FFD100"
                         android:fontFamily="sans-serif-black"/>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/tvStatusBadge"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginBottom="15dp">
-
-                        <Button
-                            android:id="@+id/btnProfitToggle"
-                            android:layout_width="0dp"
-                            android:layout_height="50dp"
-                            android:layout_weight="1"
-                            android:text="PROFIT"
-                            android:textSize="12sp"
-                            android:textStyle="bold"
-                            android:layout_marginEnd="5dp"
-                            app:cornerRadius="25dp" />
-
-                        <Button
-                            android:id="@+id/btnLossToggle"
-                            android:layout_width="0dp"
-                            android:layout_height="50dp"
-                            android:layout_weight="1"
-                            android:text="LOSS"
-                            android:textSize="12sp"
-                            android:textStyle="bold"
-                            android:layout_marginStart="5dp"
-                            app:cornerRadius="25dp" />
-                    </LinearLayout>
+                        android:text="PROFIT"
+                        android:paddingHorizontal="30dp"
+                        android:paddingVertical="5dp"
+                        android:background="@drawable/status_badge_profit"
+                        android:textColor="#112349"
+                        android:textStyle="bold"
+                        android:layout_marginTop="10dp"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="120dp"
-                        android:background="#F5F6F8"
+                        android:background="#1A3166"
                         android:gravity="center"
                         android:orientation="vertical"
+                        android:layout_marginTop="15dp"
                         android:layout_marginBottom="15dp">
-                        <ImageView
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:src="@android:drawable/ic_menu_sort_by_size"
-                            app:tint="#A0A0A0"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Weekly Sales Graph goes here"
-                            android:textColor="#A0A0A0"
-                            android:textSize="12sp"
-                            android:layout_marginTop="5dp"/>
+                            android:text="Weekly Sales Graph"
+                            android:textColor="#8899BB" />
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/insight_border"
-                        android:padding="15dp"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="AI Insights"
-                            android:textColor="#113285"
-                            android:textStyle="bold"
-                            android:layout_marginBottom="5dp"/>
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Insight: Prepare 85 karipap tomorrow (optimized from 100 based on sales data)\nAction: 20 karipap left. Launch a '3 for RM4' promo now to reduce unsold items."
-                            android:textSize="12sp"
-                            android:textColor="#333333" />
-                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -183,30 +139,14 @@
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Inventory" android:textSize="10sp" android:textColor="#333333" android:layout_marginTop="5dp"/>
                     </LinearLayout>
 
-                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+                    <LinearLayout android:id="@+id/nav_qr" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
                         <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_qr" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="QR" android:textSize="10sp" android:textColor="#333333" android:layout_marginTop="5dp"/>
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/nav_insights"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:gravity="center">
-
-                        <ImageView
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"
-                            android:src="@drawable/ic_insights" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Insights"
-                            android:textSize="10sp"
-                            android:layout_marginTop="5dp"/>
+                    <LinearLayout android:id="@+id/nav_insights" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+                        <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_insights" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Insights" android:textSize="10sp" android:textColor="#333333" android:layout_marginTop="5dp"/>
                     </LinearLayout>
 
                     <LinearLayout android:id="@+id/nav_history" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
@@ -216,11 +156,6 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <LinearLayout
-                android:id="@+id/inventoryContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
         </LinearLayout>
     </ScrollView>
 

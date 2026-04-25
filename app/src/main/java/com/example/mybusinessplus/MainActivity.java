@@ -3,13 +3,10 @@ package com.example.mybusinessplus;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -20,8 +17,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView tvNetRevenue;
-    private Button btnProfitToggle, btnLossToggle;
+    private TextView tvNetRevenue, tvStatusBadge;
     private double dailyNetResult = 0;
 
     // Helper class for inventory math
@@ -39,25 +35,24 @@ public class MainActivity extends AppCompatActivity {
 
         // 1. Link UI Elements
         tvNetRevenue = findViewById(R.id.tvNetRevenue);
-        btnProfitToggle = findViewById(R.id.btnProfitToggle);
-        btnLossToggle = findViewById(R.id.btnLossToggle);
-        LinearLayout inventoryContainer = findViewById(R.id.inventoryContainer);
+        tvStatusBadge = findViewById(R.id.tvStatusBadge); // The new singular badge
         Spinner spinnerTimeframe = findViewById(R.id.spinnerTimeframe);
 
         // 2. Navigation "Bridge" Logic
-        // Link to Inventory Setting (AddFoodActivity)
         findViewById(R.id.nav_inventory).setOnClickListener(v ->
                 startActivity(new Intent(MainActivity.this, AddFoodActivity.class))
         );
 
-        // Link to History Page
         findViewById(R.id.nav_history).setOnClickListener(v ->
                 startActivity(new Intent(MainActivity.this, HistoryActivity.class))
         );
 
-        // Link to Insights Page
         findViewById(R.id.nav_insights).setOnClickListener(v ->
                 startActivity(new Intent(MainActivity.this, activity_insights.class))
+        );
+
+        findViewById(R.id.nav_qr).setOnClickListener(v ->
+                startActivity(new Intent(MainActivity.this, activity_qr.class))
         );
 
         // 3. Dropdown (Spinner) Setup
@@ -77,11 +72,10 @@ public class MainActivity extends AppCompatActivity {
             int sold = item.startQty - item.unsoldQty;
             rev += (sold * item.price);
             loss += (item.unsoldQty * item.price);
-            addViewForItem(inventoryContainer, item, sold);
         }
         dailyNetResult = rev - loss;
 
-        // 5. Spinner Listener to update dashboard numbers
+        // 5. Spinner Listener
         spinnerTimeframe.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -95,62 +89,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Updates the revenue text and toggles button colors based on profit/loss
+     * Updates the revenue text and toggles the status badge based on profit/loss
      */
     private void updateDashboard(double amount) {
         tvNetRevenue.setText(String.format("%sRM %.2f", amount >= 0 ? "+" : "-", Math.abs(amount)));
 
-        // Color: Orange for profit, Red for loss
-        tvNetRevenue.setTextColor(amount >= 0 ? Color.parseColor("#FF5722") : Color.parseColor("#FF5252"));
+        // Gold for Profit, Light Red for Loss
+        tvNetRevenue.setTextColor(amount >= 0 ? Color.parseColor("#FFD100") : Color.parseColor("#FF6666"));
 
         if (amount >= 0) {
-            // Profit Active: Gold background, Navy text
-            btnProfitToggle.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFD100")));
-            btnProfitToggle.setTextColor(Color.parseColor("#113285"));
-
-            // Loss Inactive: Light Gray background, Dark Gray text
-            btnLossToggle.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F0F0F0")));
-            btnLossToggle.setTextColor(Color.parseColor("#888888"));
+            tvStatusBadge.setText("PROFIT");
+            tvStatusBadge.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFD100")));
+            tvStatusBadge.setTextColor(Color.parseColor("#112349")); // Dark Navy text
         } else {
-            // Profit Inactive
-            btnProfitToggle.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F0F0F0")));
-            btnProfitToggle.setTextColor(Color.parseColor("#888888"));
-
-            // Loss Active: Red background, White text
-            btnLossToggle.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FF5252")));
-            btnLossToggle.setTextColor(Color.WHITE);
+            tvStatusBadge.setText("LOSS");
+            tvStatusBadge.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FF6666")));
+            tvStatusBadge.setTextColor(Color.WHITE);
         }
-    }
-
-    /**
-     * Dynamically adds inventory cards to the bottom list
-     */
-    private void addViewForItem(LinearLayout container, InventoryItem item, int soldQty) {
-        com.google.android.material.card.MaterialCardView card = new com.google.android.material.card.MaterialCardView(this);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(-1, -2);
-        params.setMargins(0, 0, 0, 30);
-        card.setLayoutParams(params);
-        card.setRadius(16f);
-        card.setCardBackgroundColor(Color.parseColor("#113285"));
-        card.setStrokeColor(Color.WHITE);
-        card.setStrokeWidth(2);
-
-        LinearLayout row = new LinearLayout(this);
-        row.setOrientation(LinearLayout.VERTICAL);
-        row.setPadding(40, 40, 40, 40);
-
-        TextView name = new TextView(this);
-        name.setText(item.name + " (Sold: " + soldQty + ")");
-        name.setTextColor(Color.WHITE);
-        name.setTypeface(null, Typeface.BOLD);
-
-        TextView stats = new TextView(this);
-        stats.setText("Unsold: " + item.unsoldQty + " | Revenue: RM " + String.format("%.2f", soldQty * item.price));
-        stats.setTextColor(Color.parseColor("#FFD100"));
-
-        row.addView(name);
-        row.addView(stats);
-        card.addView(row);
-        container.addView(card);
     }
 }
