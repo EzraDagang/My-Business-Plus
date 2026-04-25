@@ -52,7 +52,7 @@ public class MerchantActivity extends AppCompatActivity {
         );
 
         findViewById(R.id.nav_qr).setOnClickListener(v ->
-                startActivity(new Intent(MainActivity.this, activity_qr.class))
+                startActivity(new Intent(MerchantActivity.this, activity_qr.class))
         );
 
         // 3. Dropdown (Spinner) Setup
