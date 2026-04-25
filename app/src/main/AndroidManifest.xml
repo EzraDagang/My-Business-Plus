@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-feature android:name="android.hardware.camera.any" />
-
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -16,39 +16,48 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyBusinessPlus"
         tools:targetApi="31">
-        <activity
-            android:name=".activity_inventory"
-            android:exported="false" />
-        <activity
-            android:name=".QrScannerActivity"
-            android:exported="false" />
+
         <activity
             android:name=".HomePageActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".activity_login"
+            android:exported="false" />
+
+        <activity
+            android:name=".MerchantActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".activity_inventory"
+            android:exported="false" />
+        <activity
+            android:name=".AddFoodActivity"
+            android:exported="false" />
+
         <activity
             android:name=".activity_qr"
             android:exported="false" />
         <activity
-            android:name=".activity_insights"
+            android:name=".QrScannerActivity"
             android:exported="false" />
+
         <activity
-            android:name=".HistoryActivity"
+            android:name=".activity_insights"
             android:exported="false" />
         <activity
             android:name=".WeeklyDashboardActivity"
             android:exported="false" />
         <activity
-            android:name=".AddFoodActivity"
+            android:name=".HistoryActivity"
             android:exported="false" />
-        <activity
-            android:name=".MerchantActivity"
-            android:exported="false" />
+
     </application>
 
 </manifest>

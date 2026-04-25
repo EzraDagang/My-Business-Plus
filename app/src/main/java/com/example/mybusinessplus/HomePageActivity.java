@@ -30,6 +30,13 @@ public class HomePageActivity extends AppCompatActivity {
             getSupportActionBar().hide();
         }
 
+        // Inside your onCreate method
+        findViewById(R.id.layoutMyBusiness).setOnClickListener(v -> {
+            // Navigation: From this screen to LoginActivity
+            Intent intent = new Intent(HomePageActivity.this, activity_login.class);
+            startActivity(intent);
+        });
+
         findViewById(R.id.layoutMyBusiness).setOnClickListener(v -> {
             Intent intent = new Intent(HomePageActivity.this, MerchantActivity.class);
             startActivity(intent);
@@ -46,6 +53,16 @@ public class HomePageActivity extends AppCompatActivity {
             // Navigate to your scanner activity
             Intent intent = new Intent(HomePageActivity.this, QrScannerActivity.class);
             startActivity(intent);
+        });
+
+        // Inside your onCreate method, after setContentView(...)
+        findViewById(R.id.layoutMyBusiness).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create an Intent to go from 'this' activity to 'activity_login'
+                Intent intent = new Intent(HomePageActivity.this, activity_login.class);
+                startActivity(intent);
+            }
         });
 
 

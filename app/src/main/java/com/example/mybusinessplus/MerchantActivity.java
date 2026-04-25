@@ -9,19 +9,16 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class MerchantActivity extends AppCompatActivity {
 
     private TextView tvNetRevenue, tvStatusBadge;
-    private SalesLineChartView chartView; // Connects to your custom chart
+    private SalesLineChartView chartView;
     private double dailyNetResult = 0;
 
-    // Helper class for inventory math
     class InventoryItem {
         String name; double price; int startQty; int unsoldQty;
         public InventoryItem(String name, double price, int startQty, int unsoldQty) {
@@ -34,90 +31,73 @@ public class MerchantActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_merchant);
 
-        // 1. Link UI Elements
+        if (getSupportActionBar() != null) getSupportActionBar().hide();
+
         tvNetRevenue = findViewById(R.id.tvNetRevenue);
         tvStatusBadge = findViewById(R.id.tvStatusBadge);
         chartView = findViewById(R.id.salesLineChart);
         Spinner spinnerTimeframe = findViewById(R.id.spinnerTimeframe);
 
-        // 2. Navigation "Bridge" Logic
+        // Navigation (Matches your existing file names)
         findViewById(R.id.nav_inventory).setOnClickListener(v ->
-                startActivity(new Intent(MerchantActivity.this, activity_inventory.class))
-        );
+                startActivity(new Intent(this, activity_inventory.class)));
 
         findViewById(R.id.nav_history).setOnClickListener(v ->
-                startActivity(new Intent(MerchantActivity.this, HistoryActivity.class))
-        );
+                startActivity(new Intent(this, HistoryActivity.class)));
 
         findViewById(R.id.nav_insights).setOnClickListener(v ->
-                startActivity(new Intent(MerchantActivity.this, activity_insights.class))
-        );
+                startActivity(new Intent(this, activity_insights.class)));
 
         findViewById(R.id.nav_qr).setOnClickListener(v ->
-                startActivity(new Intent(MerchantActivity.this, activity_qr.class))
-        );
+                startActivity(new Intent(this, activity_qr.class)));
 
-        // 3. Dropdown (Spinner) Setup
+        // Spinner Setup
         String[] options = {"Daily", "This Week", "This Month"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, options);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerTimeframe.setAdapter(adapter);
 
-        // 4. Mock Data & Math
-        List<InventoryItem> items = new ArrayList<>();
-        items.add(new InventoryItem("Karipap", 1.50, 100, 20));
-        items.add(new InventoryItem("Nasi Lemak", 3.00, 50, 2));
-        items.add(new InventoryItem("Kuih Lapis", 1.00, 80, 0));
+        calculateMockData();
 
-        double rev = 0; double loss = 0;
-        for (InventoryItem item : items) {
-            int sold = item.startQty - item.unsoldQty;
-            rev += (sold * item.price);
-            loss += (item.unsoldQty * item.price);
-        }
-        dailyNetResult = rev - loss;
-
-        // 5. Spinner Listener & Dynamic Chart Updater
         spinnerTimeframe.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0) {
-                    // "Daily" - Hourly progression (e.g., morning to evening)
                     updateDashboard(dailyNetResult);
-                    float[] hourlyData = {12.5f, 25.0f, 45.5f, 30.0f, 80.0f, 110.0f, 65.0f, 40.0f, 90.0f, 15.0f};
-                    chartView.setData(hourlyData);
-
+                    chartView.setData(new float[]{12f, 25f, 45f, 30f, 80f, 110f, 65f, 90f});
                 } else if (position == 1) {
-                    // "This Week" - Mon to Sun progression
                     updateDashboard(1450.75);
-                    float[] weeklyData = {150f, 200f, 180f, 220f, 300f, 450f, 380f};
-                    chartView.setData(weeklyData);
-
-                } else if (position == 2) {
-                    // "This Month" - Week 1 to Week 4 progression
+                    chartView.setData(new float[]{150f, 200f, 180f, 220f, 300f, 450f, 380f});
+                } else {
                     updateDashboard(5820.00);
-                    float[] monthlyData = {1200f, 1450f, 1100f, 1800f};
-                    chartView.setData(monthlyData);
+                    chartView.setData(new float[]{1200f, 1450f, 1100f, 1800f});
                 }
             }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
+            @Override public void onNothingSelected(AdapterView<?> parent) {}
         });
     }
 
-    /**
-     * Updates the revenue text and toggles the status badge based on profit/loss
-     */
+    private void calculateMockData() {
+        List<InventoryItem> items = new ArrayList<>();
+        items.add(new InventoryItem("Karipap", 1.50, 100, 20));
+        items.add(new InventoryItem("Nasi Lemak", 3.00, 50, 2));
+
+        double rev = 0; double loss = 0;
+        for (InventoryItem item : items) {
+            rev += ((item.startQty - item.unsoldQty) * item.price);
+            loss += (item.unsoldQty * item.price);
+        }
+        dailyNetResult = rev - loss;
+    }
+
     private void updateDashboard(double amount) {
         tvNetRevenue.setText(String.format("%sRM %.2f", amount >= 0 ? "+" : "-", Math.abs(amount)));
-
-        // Gold for Profit, Light Red for Loss
         tvNetRevenue.setTextColor(amount >= 0 ? Color.parseColor("#FFD100") : Color.parseColor("#FF6666"));
 
         if (amount >= 0) {
             tvStatusBadge.setText("PROFIT");
             tvStatusBadge.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFD100")));
-            tvStatusBadge.setTextColor(Color.parseColor("#112349")); // Dark Navy text
+            tvStatusBadge.setTextColor(Color.parseColor("#112349"));
         } else {
             tvStatusBadge.setText("LOSS");
             tvStatusBadge.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FF6666")));
