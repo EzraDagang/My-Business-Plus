@@ -43,6 +43,9 @@ dependencies {
     implementation(libs.camera.lifecycle)
     implementation(libs.camera.view)
 
+    implementation(libs.volley)
+    implementation(libs.google.gson)
+
     implementation(libs.mlkit.barcode.scanning)
 
     implementation(libs.androidx.browser)
